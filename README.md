@@ -9,6 +9,7 @@
 ![](https://i.imgur.com/0dlIUcd.png)
 
 ## 部署說明
+- 先把學校的信件設定轉寄到某個gmail，，然後把GAS跑在該帳號上
 - 基本上把各.gs內容copy到google app script上即可執行
 - 主要執行`bulletin.gs`中的main，並設為每10分鐘執行一次
 - `bulletin.gs`有使用 [cheerio](https://github.com/tani/cheeriogs) 作為分析網頁資料的工具，若要部屬請記得在資料庫的地方新增服務(版本選擇12)

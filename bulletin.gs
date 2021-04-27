@@ -37,7 +37,6 @@ function main() {
   for (var i = 0; i < outputData.length; i++) {
     send_tg_notif(outputData[i]);
   }
-  write_latest_data(last_data);
 
   for (var i = 0; i < outputData.length; i++) {
     heroku_send_line_notify(outputData[i]);
@@ -61,10 +60,13 @@ function heroku_send_line_notify(outputData) {
 function fetch_bulletin_data(last_data) {
   var threads = GmailApp.search('subject:"[TaiwanTech] 臺科公佈欄(NTUST Bulletin)"');
 
+  //比對資料，相同就不執行回傳-1
   if (last_data === threads[0].getFirstMessageSubject()) {
     console.log("nothing changed");
     return -1;
   }
+
+  write_latest_data(threads[0].getFirstMessageSubject());
 
   console.log(threads[0].getFirstMessageSubject());
   var msg = threads[0].getMessages();
