@@ -24,6 +24,8 @@ def index():
             caption = "\n【" + data["info_type"] + "】\n\n" + data["info_title"] + "\n\n" + data["link_path"]
             header = {'Authorization': 'Bearer ' + userData['token']}
             outdata = {'message': caption}
+            if "img_path" in data:
+                outdata = {'message': caption, 'imageThumbnail': data["img_path"], 'imageFullsize': data["img_path"]}
 
             res = await loop.run_in_executor(None, lambda: requests.post(url, headers=header, data=outdata))
 
