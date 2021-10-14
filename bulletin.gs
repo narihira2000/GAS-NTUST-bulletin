@@ -36,6 +36,10 @@ function main() {
   //發送通知
   for (var i = 0; i < outputData.length; i++) {
     send_tg_notif(outputData[i]);
+    if(i===19){
+      // 如果資料超過20筆就先休息65秒避免超過tg上限
+      Utilities.sleep(65*1000);
+    }
   }
 
   for (var i = 0; i < outputData.length; i++) {
