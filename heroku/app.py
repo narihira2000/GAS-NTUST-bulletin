@@ -3,13 +3,13 @@ import os
 import requests
 import json
 import asyncio
+import aiohttp
 
 app = Flask(__name__)
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
     if(request.method == 'POST'):    
-        loop = asyncio.get_event_loop()
         output_data = request.get_json()
         data = output_data['output_data']
         print(output_data)
@@ -27,15 +27,18 @@ def index():
             if "img_path" in data:
                 outdata = {'message': caption, 'imageThumbnail': data["img_path"], 'imageFullsize': data["img_path"]}
 
-            res = await loop.run_in_executor(None, lambda: requests.post(url, headers=header, data=outdata))
+            async with aiohttp.request("POST", url, headers=header, data=outdata) as resp:
+                return resp.status
 
         tasks = []
         # print(data)
         for userData in userDatas:
-            task = loop.create_task(send_line_notify(data, userData))
-            tasks.append(task)
+            tasks.append(send_line_notify(data, userData))
+
+        async def gather_requests():
+            await asyncio.gather(*tasks)
             
-        loop.run_until_complete(asyncio.wait(tasks))
+        asyncio.run(gather_requests())
         return f'send line success'
 
     if(request.method == 'GET'):

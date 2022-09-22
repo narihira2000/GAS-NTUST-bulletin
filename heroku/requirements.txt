@@ -1,4 +1,4 @@
 gunicorn
 flask
 requests
-asyncio
+aiohttp
